@@ -42,6 +42,9 @@ max_modes_smaller_periods = 35
 max_modes_larger_periods  = 35
 # KIC number
 KIC = '06352430' #'07760680' #
+# Work directory, no trailing slash.
+WORK_DIR = '/Users/joey/Documents/Projects/IGW_mixing/SHERLOCK'
+
 
 def strip(text):
     try:
@@ -59,7 +62,7 @@ def KIC_li(KIC):
 #    x = pickle.load(f)
 
 
-with open(f'/Users/joey/Documents/Projects/IGW_mixing/SHERLOCK/gyre_per_l1m{m}_ext.pkl', 'rb') as f:
+with open(f'{WORK_DIR}/grids/gyre_per_l1m{m}_ext.pkl', 'rb') as f:
     x = pickle.load(f)
 
 deltaP_all_min = deltaP_all_max = 0
@@ -579,10 +582,10 @@ def save_selections(event):
     initial_periods_indices: indices of the three initial modes
     nonlin_id_arr: Non-linear mode ID (i.e. combination frequency)
     '''
-    global psp_dict, fig, KIC, strategy, m
-    fig.savefig(f'PSP_KIC0{KIC}_strategy_{strategy}_l1m{m}_test.png', dpi = 300)
+    global psp_dict, fig, KIC, strategy, m, WORK_DIR
+    fig.savefig(f'{WORK_DIR}/PSP_KIC0{KIC}_strategy_{strategy}_l1m{m}_test.png', dpi = 300)
 
-    with open(f'PSP_KIC0{KIC}_strategy_{strategy}_l1m{m}_test.pkl', 'wb') as f:
+    with open(f'{WORK_DIR}/PSP_KIC0{KIC}_strategy_{strategy}_l1m{m}_test.pkl', 'wb') as f:
        pickle.dump(psp_dict, f)
     print(f'Pattern saved as PSP_KIC0{KIC}_strategy_{strategy}_l1m{m}_test.pkl')
 
