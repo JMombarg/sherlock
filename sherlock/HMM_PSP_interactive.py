@@ -13,14 +13,11 @@ import matplotlib.colors as mcolors
 import matplotlib.cm as cm
 
 from mpl_toolkits.axes_grid1.inset_locator import zoomed_inset_axes, inset_axes
-import glob, re
+import glob
 import pandas as pd
 import pickle, h5py
 import scipy
 from scipy import interpolate
-
-#from multiprocessing import Pool
-#from scipy.signal import savgol_filter
 
 from matplotlib.backend_bases import PickEvent
 from matplotlib.widgets import Button
@@ -43,24 +40,14 @@ max_modes_larger_periods  = 35
 # KIC number
 KIC = '06352430' #'07760680' #
 # Work directory, no trailing slash.
-WORK_DIR = '/Users/joey/Documents/Projects/IGW_mixing/SHERLOCK'
+WORK_DIR = '/Users/joey/Documents/Projects/SHERLOCK'
 
-
-def strip(text):
-    try:
-        return text.strip()
-    except AttributeError:
-        return text
 
 def KIC_li(KIC):
     if len(KIC) == 7:
         return '00' + KIC
     elif len(KIC) ==  8:
         return '0' + KIC
-
-#with open('/Users/joeym/Documents/Projects/Paper_III/Data_sets/Output_training_set_nodiff_All_Stars_n91-15_Zext.pkl', 'rb') as f:
-#    x = pickle.load(f)
-
 
 with open(f'{WORK_DIR}/grids/gyre_per_l1m{m}_ext.pkl', 'rb') as f:
     x = pickle.load(f)
@@ -104,14 +91,14 @@ def deltaP_expected(deltaP_obs1, skipped_radial_order):
     Lastely, integrate the probability distribution to get the normalization factor.
 
     -- Input --
-    deltaP_obs1: observed difference in period-spacings DeltaP_2 - DeltaP_1.
+    deltaP_obs1:          observed difference in period-spacings DeltaP_2 - DeltaP_1.
     skipped_radial_order: was a radial skipped in the pattern?
 
     -- Output --
     deltaP_min/max: search window.
-    max_prob: most likely difference in period spacing.
-    p_trans_ipol: interpolator for the PDF of differences in period-spacings.
-    norm: inverse of the integral of the PDF.
+    max_prob:       most likely difference in period spacing.
+    p_trans_ipol:   interpolator for the PDF of differences in period-spacings.
+    norm:           inverse of the integral of the PDF.
     '''
     global x
     deltaP_sel = []
@@ -182,12 +169,12 @@ def read_frequency_list(KIC, combinations_included = True):
     combinations_included: also include combination frequencies?
 
     -- Output --
-    P_obs: observed periods in days.
-    pe: uncertainties on periods
-    A: amplitudes
-    ae: uncertainties on amplitutes.
-    phase: phases in rad.
-    phe: uncertainties on phases.
+    P_obs:     observed periods in days.
+    pe:        uncertainties on periods
+    A:         amplitudes
+    ae:        uncertainties on amplitutes.
+    phase:     phases in rad.
+    phe:       uncertainties on phases.
     nonlin_id: non-linear mode ID, e.g. 'freq1+freq2'.
     '''
     strat =  pd.read_csv('/Users/joey/Documents/Projects/IGW_mixing/SHERLOCK/best_strategy.txt', names = ['KIC', 'strategy'], sep=' ', dtype = str)
@@ -574,13 +561,14 @@ reset_button.on_clicked(reset_selections)  # Connect the button to the callback 
 def save_selections(event):
     '''
     Button to save the found period-spacing pattern to a dictionary. The following quantities are saved.
-    pattern: periods of the modes in the pattern (days).
-    uncertainty: observational errors on the periods of the modes.
-    total_prob: total probability = p_trans*p_emis
-    transmission_prob: transmission probability
-    emission_prob: emission probability
+
+    pattern:                 periods of the modes in the pattern (days).
+    uncertainty:             observational errors on the periods of the modes.
+    total_prob:              total probability = p_trans*p_emis
+    transmission_prob:       transmission probability
+    emission_prob:           emission probability
     initial_periods_indices: indices of the three initial modes
-    nonlin_id_arr: Non-linear mode ID (i.e. combination frequency)
+    nonlin_id_arr:           non-linear mode ID (i.e. combination frequency)
     '''
     global psp_dict, fig, KIC, strategy, m, WORK_DIR
     fig.savefig(f'{WORK_DIR}/PSP_KIC0{KIC}_strategy_{strategy}_l1m{m}_test.png', dpi = 300)
