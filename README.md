@@ -2,6 +2,8 @@
 
 Scheme using Hidden markov models for Establishing Reiteratively a List Of Candidate period-spacings with liKelihood (SHERLOCK)
 
+SHERLOCK is an interactive Python script that is used to automatically search of period-spacing patterns in a frequency list of a gravity-mode pulsator. It relies on a grid of pulsation models to predict to most probable period peaks in the Fourier spectrum that are part of the period-spacing pattern.
+
 This repository is an open-source package, GNU-licensed. See GNU License in LICENSE.
 
 ## Documentation
@@ -23,8 +25,8 @@ Maximum number of modes towards smaller periods before terminating.
 Maximum number of modes towards larger periods before terminating.  
 `max_modes_larger_periods  = 35`
 
-Work directory, no trailing slash.
-`WORK_DIR = ...`
+Work directory, no trailing slash.  
+`WORK_DIR = ...`  
 
 To run `SHERLOCK`, run the Python script `HMM_PSP_interactive.py`. You should see a figure with three panels:
 1. mode periods vs. amplitude
@@ -33,7 +35,7 @@ To run `SHERLOCK`, run the Python script `HMM_PSP_interactive.py`. You should se
 
 The first step is to select three *consecutive* radial orders. Best practise in to select high amplitude peaks. You can select periods by clicking on them, and unselect by clicking again (zoom in if you select multiple periods at the same time). Once you are confident about your choice, press the `search` buttom to start the automated search. You should now see the results in the figure. In the top panel, the green shaded areas indicate the search window, the green dashed line the expected period, and the selected period in red. A grey shaded region means, no period was found. In the bottom panel, the initial manually selected periods are shown in red and always have a probability of 1.
 
-If you are satisfied about the result, you can save it by pressing the `save` button. Otherwise, use the `reset` button to start again.
+If you are satisfied with the result, you can save it by pressing the `save` button. Otherwise, use the `reset` button to start again.
 
 
 
@@ -54,6 +56,6 @@ If you are satisfied about the result, you can save it by pressing the `save` bu
 Developed by Joey Mombarg
 ```
 joey9mombarg[at]gmail.com
-Institut de Recherche en Astropysique et Planétology
+Institut de Recherche en Astropysique et Planétology (IRAP)
 Toulouse, France
 ```
