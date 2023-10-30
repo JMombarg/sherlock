@@ -36,7 +36,7 @@ The emission probability is based on the number of periods in the list that fall
 \end{equation}
 where $A_i$ is the amplitude of period $P_i$, and the index $j$ runs over all potential periods that fall within the search window.
 
-The algorithm is initiated with the periods of three consecutive radial orders, provided by the user. \sherlock will then compute a search window defined as the minimum and maximum period for which the probability is larger than 0.001. Then, for each candidate in the search window a total probability is computed,
+The algorithm is initiated with the periods of three consecutive radial orders, provided by the user. `SHERLOCK` will then compute a search window defined as the minimum and maximum period for which the probability is larger than 0.001. Then, for each candidate in the search window a total probability is computed,
 \begin{equation}
     P_{{\rm total}, i} = P_{{\rm emis},i} P_{{\rm trans}, i},
 \end{equation}
