@@ -26,20 +26,20 @@ Moreover, it provides a metric of confidence how likely a selected period is act
 
 The tool presented here is based on Hidden Markov Models (HMMs). A HMM is defined by a sequence of hidden states $h_i$, and visible states, where the index $i$ indicates the time step or iteration. HMM are for example used to correct typos make by the accidental pressing of an adjacent key instead. In this analogy, the hidden states $h_i$ are the intended letters and the visible states $v_i$ are the pressed keys. Given state $h_i$, the probability for a state $h_{i+1}$ is given by, $P(h_{i+1} | h_i)$,
 and a referred to as the transition probability. This transition probability in this analogy can be computed by training on a dictionary to determine the probability of the next letter given the previous one. At each time step, the HMM emits a visible state $v_i$ with probability, $P(v_i | h_i)$, which is referred to as the emission probability. This probability determines how likely it is to press a specific key, given an intended letter. Translating this example to the search for period-spacing patterns, we can think of the transmission probability as the probability of a period-spacing $\Delta P_{i}$ belonging to the pattern according to theory, given a previous period-spacing $\Delta P_{i-1}$. This probability is determined from a grid of stellar pulsation models that provides probability distributions. The \sherlock algorithm works with differences in period-spacings,
-$$
+\begin{equation}
     \delta(\Delta P)_i = \Delta P_i - \Delta P_{i+1} = (P_{i+1} - P_i) - (P_{i+2} - P_{i+1}),
-$$
-where $P_i < P_{i+1} < P_{i+2}$. For each radial order in the grid, we compute $\delta(\Delta P)_1$ and $\delta(\Delta P)_2$. For an observed $\delta(\Delta P)_{1, \rm obs}$, we select the 500 values of $\delta(\Delta P)_1$ that are closest to the observed one. Next, we compute distribution of the values of $\delta(\Delta P)_2$, that is, the expected next expected difference in period-spacing. This distribution is interpolated to make a PDF from which the transition probability is computed.
+\end{equation}
+where $P_i < P_{i+1} < P_{i+2}$. For each radial order in the grid, we compute $\delta(\Delta P)_1 $ and $ \delta(\Delta P)_2 $. For an observed $\delta(\Delta P)_{1, \rm obs} $, we select the 500 values of $\delta(\Delta P)_1$ that are closest to the observed one. Next, we compute distribution of the values of $\delta(\Delta P)_2$, that is, the expected next expected difference in period-spacing. This distribution is interpolated to make a PDF from which the transition probability is computed.
 The emission probability is based on the number of periods in the list that falls within a 95\% confidence interval, where periods with higher amplitudes are favoured over lower amplitude periods, as lower amplitude periods are more likely to be spurious. This probability is defined as,
-$$
+\begin{equation}
     P_{{\rm emis}, i} = \frac{A_i}{\sum_j A_j},
-$$
+\end{equation}
 where $A_i$ is the amplitude of period $P_i$, and the index $j$ runs over all potential periods that fall within the search window.
 
 The algorithm is initiated with the periods of three consecutive radial orders, provided by the user. \sherlock will then compute a search window defined as the minimum and maximum period for which the probability is larger than 0.001. Then, for each candidate in the search window a total probability is computed,
-$$
+\begin{equation}
     P_{{\rm total}, i} = P_{{\rm emis},i} P_{{\rm trans}, i},
-$$
+\end{equation}
 and is normalised such that $\sum_i P_{{\rm total}, i} = 1$. The period with the highest total probability is then selected and the next iteration starts.
 
 # Stellar models
