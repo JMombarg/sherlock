@@ -55,7 +55,7 @@ If you are satisfied with the result, you can save it by pressing the `save` but
 ### Author
 Developed by Joey Mombarg
 ```
-joey9mombarg[at]gmail.com
+joey.mombarg[at]irap.omp.eu
 Institut de Recherche en Astropysique et Planétology (IRAP)
 Toulouse, France
 ```
