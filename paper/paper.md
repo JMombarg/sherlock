@@ -29,7 +29,7 @@ and a referred to as the transition probability. This transition probability in 
 \begin{equation}
     \delta(\Delta P)_i = \Delta P_i - \Delta P_{i+1} = (P_{i+1} - P_i) - (P_{i+2} - P_{i+1}),
 \end{equation}
-where $P_i < P_{i+1} < P_{i+2}$. For each radial order in the grid, we compute $\delta(\Delta P)_1 $ and $ \delta(\Delta P)_2 $. For an observed $\delta(\Delta P)_{1, \rm obs} $, we select the 500 values of $\delta(\Delta P)_1$ that are closest to the observed one. Next, we compute distribution of the values of $\delta(\Delta P)_2$, that is, the expected next expected difference in period-spacing. This distribution is interpolated to make a PDF from which the transition probability is computed.
+where $P_i < P_{i+1} < P_{i+2}$. For each radial order in the grid, we compute $\delta (\Delta P)_{1}$ and $\delta (\Delta P)_{2}$. For an observed $\delta(\Delta P)_{1, \rm obs}$, we select the 500 values of $\delta(\Delta P)_1$ that are closest to the observed one. Next, we compute distribution of the values of $\delta(\Delta P)_2$, that is, the expected next expected difference in period-spacing. This distribution is interpolated to make a PDF from which the transition probability is computed.
 The emission probability is based on the number of periods in the list that falls within a 95\% confidence interval, where periods with higher amplitudes are favoured over lower amplitude periods, as lower amplitude periods are more likely to be spurious. This probability is defined as,
 \begin{equation}
     P_{{\rm emis}, i} = \frac{A_i}{\sum_j A_j},
