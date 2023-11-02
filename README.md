@@ -7,7 +7,7 @@ SHERLOCK is an interactive Python script that is used to automatically search of
 This repository is an open-source package, GNU-licensed. See GNU License in LICENSE.
 
 ## Documentation
-To ensure you have all required packages, an install with Poetry is adviced. Once you have Poetry installed (see instructions on their website), clone this github repo and run `poetry install` in the top-level of the directory.
+To ensure you have all required packages, an install with Poetry is adviced. Once you have Poetry installed (see instructions on [their website](https://python-poetry.org/docs/)), clone this github repo and run `poetry install` in the top-level of the directory.
 
 Before running, set the following parameters in `HMM_PSP_interactive.py`.
 Azimuthal order to search for. m = -1 retrograde, m = 0 zonal, m = 1 prograde.  
