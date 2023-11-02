@@ -38,7 +38,7 @@ max_modes_smaller_periods = 35
 # Maximum number of modes towards larger periods before terminating.
 max_modes_larger_periods  = 35
 # KIC number
-KIC = '06352430' #'07760680' #
+KIC =  '07760680' #'06352430'
 # Work directory, no trailing slash.
 WORK_DIR = '/Users/joey/Documents/Projects/SHERLOCK'
 
@@ -177,10 +177,8 @@ def read_frequency_list(KIC, combinations_included = True):
     phe:       uncertainties on phases.
     nonlin_id: non-linear mode ID, e.g. 'freq1+freq2'.
     '''
-    strat =  pd.read_csv('/Users/joey/Documents/Projects/IGW_mixing/SHERLOCK/best_strategy.txt', names = ['KIC', 'strategy'], sep=' ', dtype = str)
-    KIC_list = np.array(strat['KIC'])
-    strategy = strat['strategy'][np.where(KIC_list == KIC)[0][0]]
-    df = pd.read_csv(f'/Users/joey/Documents/Projects/IGW_mixing/SHERLOCK/forJoey/amplitudes_frequencies_phases_KIC0{KIC}_strategy_{strategy}.asc', sep = '\t', header = 9, names = ['freq', 'sigma_freq', 'ampl', 'sigma_ampl', 'phase', 'sigma_phase', 'nr', 'nonlin_id'])
+
+    df = pd.read_csv(f'/Users/joey/Documents/Projects/SHERLOCK/example_input_data/amplitudes_frequencies_phases_KIC0{KIC}_strategy_5.asc', sep = '\t', header = 9, names = ['freq', 'sigma_freq', 'ampl', 'sigma_ampl', 'phase', 'sigma_phase', 'nr', 'nonlin_id'])
     if not combinations_included:
         i = 0
         while 1:
@@ -551,6 +549,14 @@ def reset_selections(event):
         lines.append(line_)  # Re-add lines
         fig.canvas.mpl_connect('pick_event', on_pick)
     ax[0].set_xlim(0,4)
+    ax[2].set_xlabel(r'$P\,[d]$', fontsize = fontsize)
+    ax[1].set_ylabel(r'$\Delta P\,[s]$', fontsize = fontsize)
+    ax[2].set_ylabel(r'$p_{\rm tot}$', fontsize = fontsize)
+    ax[0].set_ylabel(r'$\log A$', fontsize = fontsize)
+    ax[0].set_ylim(0, 1.1*np.max(A))
+    ax[2].set_ylim(0, 1.05)
+    ax[0].set_xlim(0,4)
+    ax[0].set_title(f'm = {m}')
     print('=== RESET ===')
 
 # Create a "Reset Selections" button widget and add it to the plot
@@ -570,12 +576,12 @@ def save_selections(event):
     initial_periods_indices: indices of the three initial modes
     nonlin_id_arr:           non-linear mode ID (i.e. combination frequency)
     '''
-    global psp_dict, fig, KIC, strategy, m, WORK_DIR
-    fig.savefig(f'{WORK_DIR}/PSP_KIC0{KIC}_strategy_{strategy}_l1m{m}_test.png', dpi = 300)
+    global psp_dict, fig, KIC, m, WORK_DIR
+    fig.savefig(f'{WORK_DIR}/PSP_KIC0{KIC}_strategy_5_l1m{m}_test.png', dpi = 300)
 
-    with open(f'{WORK_DIR}/PSP_KIC0{KIC}_strategy_{strategy}_l1m{m}_test.pkl', 'wb') as f:
+    with open(f'{WORK_DIR}/PSP_KIC0{KIC}_strategy_5_l1m{m}_test.pkl', 'wb') as f:
        pickle.dump(psp_dict, f)
-    print(f'Pattern saved as PSP_KIC0{KIC}_strategy_{strategy}_l1m{m}_test.pkl')
+    print(f'Pattern saved as PSP_KIC0{KIC}_strategy_5_l1m{m}_test.pkl')
 
 save_button_ax = plt.axes([0.50, 0.93, 0.1, 0.05])  # Define the button's position and size
 save_button = Button(save_button_ax, 'Save')  # Create the button
