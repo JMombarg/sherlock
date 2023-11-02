@@ -140,14 +140,18 @@ def deltaP_expected(deltaP_obs1, skipped_radial_order):
     deltaP_min = np.min(xx[p_scale > 10**-3])
     deltaP_max = np.max(xx[p_scale > 10**-3])
 
-    if False:
+    if np.isnan(deltaP_obs1):
         fig, ax = plt.subplots()
+        plt.subplots_adjust(left = 0.14, bottom = 0.15, right = 0.95, top = 0.95)
         ax.plot(xx, np.log10(p_trans_ipol(xx)/np.max(p_trans_ipol(xx))), color = 'k')
         ax.vlines([deltaP_min, deltaP_max], ymin = 0, ymax = 1, color = 'grey')
         ax.vlines([max_prob], ymin = 0, ymax = 1, color = 'g')
         ax.axhline(-3, color ='grey', linestyle ='dashed')
         ax.set_xlabel(r'$\Delta P_1 - \Delta P_2$', fontsize = 14)
         ax.set_ylabel(r'$\log P/P_{\rm max}$', fontsize = 14)
+        ax.set_ylim(-4,1.5)
+        ax.set_xlim(-2000, 2000)
+        fig.savefig(f'/Users/joey/Documents/Projects/SHERLOCK/paper/figures/Probability_distribution.png', dpi = 200)
 
     return deltaP_min, deltaP_max, max_prob, p_trans_ipol, norm
 
