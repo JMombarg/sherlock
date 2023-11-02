@@ -133,14 +133,15 @@ def deltaP_expected(deltaP_obs1, skipped_radial_order):
     norm = 1/np.trapz(p_trans_pos)
 
     p_scale = np.array(p_trans_ipol(xx)/np.max(p_trans_ipol(xx)))
-    xmax = xx[np.argmax(p_scale)]
+    #xmax = xx[np.argmax(p_scale)]
     #deltaP_min = np.max(xx[(p_scale < 10**-3) & (xx < xmax)]) #-3
     #deltaP_max = np.min(xx[(p_scale < 10**-3) & (xx > xmax)]) #-3
     # This cutoff value works well for the SPB grid. Make the plots below to verify.
     deltaP_min = np.min(xx[p_scale > 10**-3])
     deltaP_max = np.max(xx[p_scale > 10**-3])
 
-    if np.isnan(deltaP_obs1):
+    # Make plots of the probability distributions.
+    if False:
         fig, ax = plt.subplots()
         plt.subplots_adjust(left = 0.14, bottom = 0.15, right = 0.95, top = 0.95)
         ax.plot(xx, np.log10(p_trans_ipol(xx)/np.max(p_trans_ipol(xx))), color = 'k')
@@ -151,7 +152,6 @@ def deltaP_expected(deltaP_obs1, skipped_radial_order):
         ax.set_ylabel(r'$\log P/P_{\rm max}$', fontsize = 14)
         ax.set_ylim(-4,1.5)
         ax.set_xlim(-2000, 2000)
-        fig.savefig(f'/Users/joey/Documents/Projects/SHERLOCK/paper/figures/Probability_distribution.png', dpi = 200)
 
     return deltaP_min, deltaP_max, max_prob, p_trans_ipol, norm
 
@@ -166,7 +166,7 @@ def p_emis(A_potential, in_log):
 
 def read_frequency_list(KIC, combinations_included = True):
     '''
-    Read frequency list from Van Beeck et al. (2022) for a given KIC number, picking their extraction strategy with the highest f_sv factor.
+    Read frequency list from Van Beeck et al. (2021, A&A, 655, A59) for a given KIC number, picking their extraction strategy with the highest f_sv factor.
 
     -- Input --
     KIC: KIC number without 'KIC' prefix
@@ -182,7 +182,7 @@ def read_frequency_list(KIC, combinations_included = True):
     nonlin_id: non-linear mode ID, e.g. 'freq1+freq2'.
     '''
 
-    df = pd.read_csv(f'/Users/joey/Documents/Projects/SHERLOCK/example_input_data/amplitudes_frequencies_phases_KIC0{KIC}_strategy_5.asc', sep = '\t', header = 9, names = ['freq', 'sigma_freq', 'ampl', 'sigma_ampl', 'phase', 'sigma_phase', 'nr', 'nonlin_id'])
+    df = pd.read_csv(f'{WORK_DIR}/example_input_data/amplitudes_frequencies_phases_KIC0{KIC}_strategy_5.asc', sep = '\t', header = 9, names = ['freq', 'sigma_freq', 'ampl', 'sigma_ampl', 'phase', 'sigma_phase', 'nr', 'nonlin_id'])
     if not combinations_included:
         i = 0
         while 1:
