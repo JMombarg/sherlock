@@ -56,3 +56,5 @@ To demonstrate to performance of `SHERLOCK`, we use the well-studied gravity-mod
 
 # Acknowledgements
  The research leading to these results has received funding the French Agence Nationale de la Recherche (ANR), under grant MASSIF (ANR-21-CE31-0018-02). The author thanks Mathias Michielsen for his advice on unit tests and `Poetry`.
+
+# References
