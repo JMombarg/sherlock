@@ -43,14 +43,15 @@ If you are satisfied with the result, you can save it by pressing the `save` but
 
 1. `auxiliary`: Script for generating your own input file based on a grid of GYRE models. (Optional)
 2. `docs`: Source to generate the documentation webpages.
-3. `example_setup`: An example setup.
-4. `grids`: Input files containing the periods of radial orders -1 to -100, and m = -1, 0, 1 (l=1, dipole modes).
-5. `sherlock`: The SHERLOCK python package.
-6. `paper`: Paper placing the package in scientific context.
-7. `tests`: pytest for the package.
-8. `LICENSE`: GNU general public license.
-9. `poetry.lock`: List of dependencies and their exact versions.
-10. `pyproject.toml`: Installation configuration file.
+3. `example_input_data`: An example of a frequency list from Van Beeck et al. (2021, A&A, 655, A59) used as input.
+4. `example_expected_output`: Expected output for the frequency list provided in `example_input_data`.
+5. `grids`: Input files containing the periods of radial orders -1 to -100, and m = -1, 0, 1 (l=1, dipole modes).
+6. `sherlock`: The SHERLOCK python package.
+7. `paper`: Paper placing the package in scientific context.
+8. `tests`: pytest for the package.
+9. `LICENSE`: GNU general public license.
+10. `poetry.lock`: List of dependencies and their exact versions.
+11. `pyproject.toml`: Installation configuration file.
 
 ### Author
 Developed by Joey Mombarg
