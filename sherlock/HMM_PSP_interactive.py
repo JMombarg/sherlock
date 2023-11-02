@@ -1,7 +1,7 @@
 ##########################
 # Scheme using Hidden markov models for Establishing Reiteratively a List Of Candidate period-spacings with liKelihood (SHERLOCK)
 #
-# beta version
+# version 1.0
 # Joey Mombarg - Oct 2023
 ##########################
 import matplotlib
