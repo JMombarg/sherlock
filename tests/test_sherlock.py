@@ -1,5 +1,5 @@
 # Set of unit tests for SHERLOCK. The expected results of the tests are based on the grid gyre_per_l1m1_ext.pkl and star KIC09020774.
-# To test, run 'pytest'.
+# To test, run 'pytest'. (Poetry needed.)
 # Joey Mombarg - 18 oct 2023
 
 
@@ -60,12 +60,11 @@ def test_find_next_period():
     deltaP_obs1 = DeltaP_obs1 - DeltaP_obs2
 
     # Compute the expected difference in period-spacing for the next period, and the search interval.
-    percen5, percen95, deltaP_exp, p_trans_ipol, norm  = sh.deltaP_expected(deltaP_obs1, skipped_radial_order)
+    deltaP_min, deltaP_max, deltaP_exp, p_trans_ipol, norm  = sh.deltaP_expected(deltaP_obs1, skipped_radial_order)
     # Compute the most probable period spacing, and the expected minimum and maximum period spacing.
     DeltaP_exp  = DeltaP_obs2 - deltaP_exp
-    DeltaP_up   = DeltaP_obs2 - deltaP_all_min
-    DeltaP_low  = DeltaP_obs2 - deltaP_all_max
-
+    DeltaP_up   = DeltaP_obs2 - np.max([deltaP_all_min, deltaP_min])
+    DeltaP_low  = DeltaP_obs2 - np.min([deltaP_all_max, deltaP_max])
 
     P_potential = np.array([0.5681374400945814, 0.5746361846637587, 0.564255594968133, 0.5720535495869257])
     A_potential = np.array([0.6779919598227506, 0.8452006804965032, 0.4684026337411909, 0.339648036683893])

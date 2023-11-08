@@ -38,10 +38,11 @@ max_modes_smaller_periods = 35
 # Maximum number of modes towards larger periods before terminating.
 max_modes_larger_periods  = 35
 # KIC number
-KIC =  '07760680' #'06352430'
+KIC =  '07760680' #
 # Work directory, no trailing slash.
 WORK_DIR = '/Users/joey/Documents/Projects/SHERLOCK'
-
+# Always use the entire grid for the search window and expected value.
+always_use_entire_grid = False
 
 def KIC_li(KIC):
     if len(KIC) == 7:
@@ -141,7 +142,7 @@ def deltaP_expected(deltaP_obs1, skipped_radial_order):
     deltaP_max = np.max(xx[p_scale > 10**-3])
 
     # Make plots of the probability distributions.
-    if False:
+    if True:
         fig, ax = plt.subplots()
         plt.subplots_adjust(left = 0.14, bottom = 0.15, right = 0.95, top = 0.95)
         ax.plot(xx, np.log10(p_trans_ipol(xx)/np.max(p_trans_ipol(xx))), color = 'k')
@@ -164,7 +165,7 @@ def p_emis(A_potential, in_log):
     return A_potential/np.sum(A_potential)
 
 
-def read_frequency_list(KIC, combinations_included = True):
+def read_frequency_list(WORK_DIR, KIC, combinations_included = True):
     '''
     Read frequency list from Van Beeck et al. (2021, A&A, 655, A59) for a given KIC number, picking their extraction strategy with the highest f_sv factor.
 
@@ -183,6 +184,7 @@ def read_frequency_list(KIC, combinations_included = True):
     '''
 
     df = pd.read_csv(f'{WORK_DIR}/example_input_data/amplitudes_frequencies_phases_KIC0{KIC}_strategy_5.asc', sep = '\t', header = 9, names = ['freq', 'sigma_freq', 'ampl', 'sigma_ampl', 'phase', 'sigma_phase', 'nr', 'nonlin_id'])
+
     if not combinations_included:
         i = 0
         while 1:
@@ -212,7 +214,7 @@ def read_frequency_list(KIC, combinations_included = True):
     pe = fe/freq**2
     return P_obs, pe, A, ae, phase, phe, nonlin_id
 
-P_obs, pe, A, ae, phase, phe, nonlin_id = read_frequency_list(KIC, combinations_included = True)
+P_obs, pe, A, ae, phase, phe, nonlin_id = read_frequency_list(WORK_DIR, KIC, combinations_included = True)
 
 initial_period_index = []
 psp_dict = {}
@@ -298,16 +300,26 @@ def button_search(event):
         DeltaP_obs2 = np.abs(P_obs2 - P_obs3)*86400
         deltaP_obs1 = DeltaP_obs1 - DeltaP_obs2
 
+        if always_use_entire_grid:
+            skipped_radial_order = True
         # Compute the expected difference in period-spacing for the next period, and the search interval.
-        percen5, percen95, deltaP_exp, p_trans_ipol, norm  = deltaP_expected(deltaP_obs1, skipped_radial_order)
+        deltaP_min, deltaP_max, deltaP_exp, p_trans_ipol, norm  = deltaP_expected(deltaP_obs1, skipped_radial_order)
         # Compute the most probable period spacing, and the expected minimum and maximum period spacing.
         DeltaP_exp  = DeltaP_obs2 - deltaP_exp
-        DeltaP_up   = DeltaP_obs2 - deltaP_all_min
-        DeltaP_low  = DeltaP_obs2 - deltaP_all_max
+        # Take the smallest search window between the value computed using the deltaP_obs1 value and the value using the entire grid of models.
+        DeltaP_up   = DeltaP_obs2 - np.max([deltaP_all_min, deltaP_min])
+        DeltaP_low  = DeltaP_obs2 - np.min([deltaP_all_max, deltaP_max])
 
         DeltaP_all  =  (P_obs - P_obs3)*86400
         # Keep only periods with spacings within the search interval and positive spacings.
         get = np.array([DeltaP_low < DeltaP_all]) & np.array([DeltaP_all < DeltaP_up]) & np.array([DeltaP_all > 0])
+
+        # Retry with a larger search window if no candidates are found.
+        if np.sum(get) == 0:
+            DeltaP_low  = DeltaP_obs1 + deltaP_all_min
+            DeltaP_up   = DeltaP_obs1 + deltaP_all_max
+            get = np.array([DeltaP_low < DeltaP_all]) & np.array([DeltaP_all < DeltaP_up]) & np.array([DeltaP_all > 0])
+
         if np.sum(get) > 0:
             P_potential = P_obs[get[0]]
             np.set_printoptions(precision=16)
@@ -401,14 +413,21 @@ def button_search(event):
         DeltaP_obs1 = np.abs(P_obs1 - P_obs2)*86400
         DeltaP_obs2 = np.abs(P_obs2 - P_obs3)*86400
         deltaP_obs1 = DeltaP_obs1 - DeltaP_obs2
-        percen5, percen95, deltaP_exp, p_trans_ipol, norm  = deltaP_expected(deltaP_obs1, skipped_radial_order)
+        if always_use_entire_grid:
+            skipped_radial_order = True
+        deltaP_min, deltaP_max, deltaP_exp, p_trans_ipol, norm  = deltaP_expected(deltaP_obs1, skipped_radial_order)
         DeltaP_exp  = DeltaP_obs1 + deltaP_exp
-        DeltaP_low  = DeltaP_obs1 + deltaP_all_min
-        DeltaP_up   = DeltaP_obs1 + deltaP_all_max
+        DeltaP_low  = DeltaP_obs1 + np.max([deltaP_all_min, deltaP_min])
+        DeltaP_up   = DeltaP_obs1 + np.min([deltaP_all_max, deltaP_max])
 
 
         DeltaP_all  =  (P_obs1 - P_obs)*86400
         get = np.array([DeltaP_low < DeltaP_all]) & np.array([DeltaP_all < DeltaP_up]) & np.array([DeltaP_all > 0])
+        if np.sum(get) == 0:
+            DeltaP_low  = DeltaP_obs1 + deltaP_all_min
+            DeltaP_up   = DeltaP_obs1 + deltaP_all_max
+            get = np.array([DeltaP_low < DeltaP_all]) & np.array([DeltaP_all < DeltaP_up]) & np.array([DeltaP_all > 0])
+
         if np.sum(get) > 0:
             P_potential = P_obs[get[0]]
             A_potential = A[get[0]]

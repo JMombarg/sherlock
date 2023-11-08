@@ -29,6 +29,9 @@ Maximum number of modes towards larger periods before terminating.
 Work directory, no trailing slash.  
 `WORK_DIR = ...`  
 
+Whether to use the entire grid for the calculations of the search window and expected value for the next period, instead of a selection of models based on the previous period spacing. Setting this to True might help if the period-spacing is complicated (e.g. mode trapping).
+`always_use_entire_grid = False`
+
 To run `SHERLOCK`, run the Python script `HMM_PSP_interactive.py`. You should see a figure with three panels:
 1. mode periods vs. amplitude
 2. the found period spacing pattern (initially empty)

@@ -43,7 +43,7 @@ The emission probability is based on the number of periods in the list that fall
 \begin{equation}
     p_{{\rm emis}, i} = \frac{A_i}{\sum_j A_j},
 \end{equation}
-where $A_i$ is the amplitude of period $P_i$, and the index $j$ runs over all potential periods that fall within the search window. The search window (or confidence interval) is taken to be the most extreme values for which $p_{\rm emis}/{\rm max}(p_{\rm emis}) > 0.001$. An example of the distribution of this quantity is shown in \autoref{fig:prob_distr}.
+where $A_i$ is the amplitude of period $P_i$, and the index $j$ runs over all potential periods that fall within the search window. The search window (or confidence interval) is taken to be the most extreme values for which $p_{\rm emis}/{\rm max}(p_{\rm emis}) > 0.001$. An example of the distribution of this quantity is shown in \autoref{fig:prob_distr}. Additionally, the entire grid can be used instead of using only the 500 closest values of $\delta(\Delta P)_1$ to the observed one.
 
 The algorithm is initiated with the periods of three consecutive radial orders, provided by the user. `SHERLOCK` will then compute a search window, defined as the minimum and maximum period for which the probability is larger than 0.001. Then, for each candidate in the search window a total probability is computed,
 \begin{equation}
